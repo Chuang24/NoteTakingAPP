@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NotesAPP.View"
         xmlns:vm="clr-namespace:NotesAPP.ViewModel"
         mc:Ignorable="d"
-        Title="NoteWindow" Height="300" Width="300">
+        Title="NoteWindow" Height="400" Width="600">
     <Window.Resources>
         <vm:NotesVM x:Key="vm"/>
         
@@ -25,6 +25,32 @@
                           Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
+        <ListView Width="140"
+                  DockPanel.Dock="Left"
+                  ItemsSource="{Binding Notebooks}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView Width="140"
+                  DockPanel.Dock="Left"
+                  ItemsSource="{Binding Notes}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+                
+        </ListView>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Speech"
+                        Click="Button_Click"/>
+                
+            </ToolBar>
+        </ToolBarTray>
         <Grid>
             
         </Grid>

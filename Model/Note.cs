@@ -31,7 +31,7 @@ namespace NotesAPP.Model
         private int notebookid;
         [Indexed]
 
-        public int Notebookid
+        public int NotebookId
         {
             get { return notebookid; }
             set { notebookid = value; OnPropertyChanged("Notebookid"); }

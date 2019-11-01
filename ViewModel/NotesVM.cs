@@ -34,6 +34,11 @@ namespace NotesAPP.ViewModel
         {
             NewNotebookCommand = new NewNotebookCommand(this);
             NewNoteCommand = new NewNoteCommand(this);
+
+            Notebooks = new ObservableCollection<Notebook>();
+            Notes = new ObservableCollection<Note>();
+
+            ReadNotebooks();
         }
 
         public void CreateNoteBook()
@@ -48,7 +53,7 @@ namespace NotesAPP.ViewModel
         {
             Note newNote = new Note()
             {
-                Notebookid = notebookID,
+                NotebookId = notebookID,
                 CreatedTime = DateTime.Now,
                 UpdatedTime = DateTime.Now,
                 Title = "New Note"
@@ -56,6 +61,41 @@ namespace NotesAPP.ViewModel
 
             DatabaseHelper.Insert(newNote);
         }
+
+        public void ReadNotebooks()
+        {
+            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            {
+                var noteboooks = conn.Table<Notebook>().ToList();//cast it to a list 
+                Notebooks.Clear();
+
+                    foreach(var notebook in noteboooks)
+                {
+                    Notebooks.Add(notebook);
+                }
+            }
+        }
+
+        public void ReadNotes()
+        {
+            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            {
+                if (SelectedNotebook != null)
+                {
+                    var notes = conn.Table<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList();
+
+                    Notes.Clear();
+                    foreach (var note in notes)
+                    {
+                        Notes.Add(note);
+                    }
+                }
+            }
+
+        }
+
     }
+
+    
 
 }
