@@ -21,8 +21,10 @@ namespace NotesAPP.ViewModel
             set
             {
                 selectedNotebook = value;
-                //get notes
+                ReadNotes();
             }
+            
+            
         }
 
         public ObservableCollection<Note> Notes { get; set; }
@@ -39,6 +41,7 @@ namespace NotesAPP.ViewModel
             Notes = new ObservableCollection<Note>();
 
             ReadNotebooks();
+            ReadNotes();
         }
 
         public void CreateNoteBook()
@@ -47,6 +50,7 @@ namespace NotesAPP.ViewModel
                 Name = "New Notebook"
             };
             DatabaseHelper.Insert(newNotebook);
+            ReadNotebooks();
         }
 
         public void CreateNote(int notebookID)
@@ -60,6 +64,7 @@ namespace NotesAPP.ViewModel
             };
 
             DatabaseHelper.Insert(newNote);
+            ReadNotes();
         }
 
         public void ReadNotebooks()

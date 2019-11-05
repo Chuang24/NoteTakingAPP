@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotesAPP.View"
         xmlns:vm="clr-namespace:NotesAPP.ViewModel"
+        xmlns:uc="clr-namespace:NotesAPP.View.UserControls"
         mc:Ignorable="d"
         Title="NoteWindow" Height="400" Width="600">
     <Window.Resources>
@@ -32,21 +33,23 @@
         </StatusBar>
 
         <ListView Width="140"
+                  Background="DarkBlue"
                   DockPanel.Dock="Left"
                   SelectedItem="{Binding SelectedNotebook,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding Notebooks}">
+                  ItemsSource="{Binding Notebooks}" >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
+                    <uc:Notebook DisplayNotebook="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView Width="140"
+
+          <ListView Width="140"
                   DockPanel.Dock="Left"
                   ItemsSource="{Binding Notes}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}"/>
+                    <uc:NoteControl Note="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
                 
@@ -73,7 +76,15 @@
                     <TextBlock Text="U"
                                TextDecorations="Underline"/>
                 </ToggleButton>
-                
+
+                <ComboBox x:Name="fontFamiltyComboBox"
+                          Width="100"
+                          SelectionChanged="FontFamiltyComboBox_SelectionChanged"/>
+                <ComboBox x:Name="fontSizeComboBox"
+                          Width="50"
+                          IsEditable="True"
+                          TextBoxBase.TextChanged="FontSizeComboBox_TextChanged"/>
+
             </ToolBar>
         </ToolBarTray>
         <Grid>

@@ -54,3 +54,7 @@ C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.Properties
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csproj.GenerateResource.cache
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csproj.CoreCompileInputs.cache
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csproj.CopyComplete
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\Notebook.g.cs
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\NoteControl.g.cs
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\Notebook.baml
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\NoteControl.baml

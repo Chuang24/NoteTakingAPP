@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Recognition;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NotesAPP.View
 {
@@ -38,28 +31,35 @@ namespace NotesAPP.View
             recognizer.LoadGrammar(grammar);
             //recognizer.SetInputToDefaultAudioDevice();
             recognizer.SpeechRecognized += Recognizer_SpeechRecgonized;
+
+            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            fontFamiltyComboBox.ItemsSource = fontFamilies;
+
+            List<double> fontSizes = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 28, 48, 72 };
+            fontSizeComboBox.ItemsSource = fontSizes;
         }
 
         private void Recognizer_SpeechRecgonized(object sender, SpeechRecognizedEventArgs e)
         {
-            string recgonizedText =  e.Result.Text;
+            string recgonizedText = e.Result.Text;
             ContentRichTextBox.Document.Blocks.Add(new Paragraph(new Run(recgonizedText)));
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown(); 
+            Application.Current.Shutdown();
         }
 
 
 
         private void SpeechButton_Click(object sender, RoutedEventArgs e)
         {
-            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false ;
+            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
             if (isButtonEnabled)
             {
                 recognizer.RecognizeAsync(RecognizeMode.Multiple);
-            }else
+            }
+            else
             {
                 recognizer.RecognizeAsyncStop();
             }
@@ -77,7 +77,7 @@ namespace NotesAPP.View
             bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
 
             var textToBold = new TextRange(ContentRichTextBox.Selection.Start, ContentRichTextBox.Selection.End);
-            if(isButtonEnabled)
+            if (isButtonEnabled)
                 ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
             else
                 ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Normal);
@@ -95,6 +95,8 @@ namespace NotesAPP.View
             var selectedDecoration = ContentRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             underlineButton.IsChecked = (selectedDecoration != DependencyProperty.UnsetValue) && (selectedDecoration.Equals(TextDecorations.Underline));
 
+            fontFamiltyComboBox.SelectedItem = ContentRichTextBox.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+            fontSizeComboBox.Text = ContentRichTextBox.Selection.GetPropertyValue(Inline.FontSizeProperty).ToString();
         }
 
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
@@ -118,5 +120,20 @@ namespace NotesAPP.View
                 ContentRichTextBox.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
             }
         }
+
+        private void FontFamiltyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (fontFamiltyComboBox.SelectedItem != null)
+            {
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, fontFamiltyComboBox.SelectedItem);
+            }
+        }
+
+        private void FontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);//text such that user can change it to their own value. 
+        }
+
+        
     }
 }
