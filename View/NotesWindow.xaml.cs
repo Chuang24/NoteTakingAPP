@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -35,7 +36,7 @@ namespace NotesAPP.View
             builder.AppendDictation();
             Grammar grammar = new Grammar(builder);
             recognizer.LoadGrammar(grammar);
-            recognizer.SetInputToDefaultAudioDevice();
+            //recognizer.SetInputToDefaultAudioDevice();
             recognizer.SpeechRecognized += Recognizer_SpeechRecgonized;
         }
 
@@ -47,22 +48,20 @@ namespace NotesAPP.View
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Application.Current.Shutdown(); 
         }
 
-        bool isRecognizing = false; 
 
 
         private void SpeechButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!isRecognizing)
+            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false ;
+            if (isButtonEnabled)
             {
                 recognizer.RecognizeAsync(RecognizeMode.Multiple);
-                isRecognizing = true;
             }else
             {
                 recognizer.RecognizeAsyncStop();
-                isRecognizing = false; 
             }
         }
 
@@ -75,8 +74,49 @@ namespace NotesAPP.View
 
         private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
+            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
+
             var textToBold = new TextRange(ContentRichTextBox.Selection.Start, ContentRichTextBox.Selection.End);
-            ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
+            if(isButtonEnabled)
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
+            else
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Normal);
+
+        }
+
+        private void ContentRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var selectedState = ContentRichTextBox.Selection.GetPropertyValue(Inline.FontWeightProperty);
+            boldButton.IsChecked = (selectedState != DependencyProperty.UnsetValue) && (selectedState.Equals(FontWeights.Bold));
+
+            var selectedStyle = ContentRichTextBox.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            italicButton.IsChecked = (selectedStyle != DependencyProperty.UnsetValue) && (selectedStyle.Equals(FontStyles.Italic));
+
+            var selectedDecoration = ContentRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            underlineButton.IsChecked = (selectedDecoration != DependencyProperty.UnsetValue) && (selectedDecoration.Equals(TextDecorations.Underline));
+
+        }
+
+        private void ItalicButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
+            if (isButtonEnabled)
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Italic);
+            else
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Normal);
+        }
+
+        private void UnderlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
+            if (isButtonEnabled)
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            else
+            {
+                TextDecorationCollection textDecorations;
+                (ContentRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty) as TextDecorationCollection).TryRemove(TextDecorations.Underline, out textDecorations);
+                ContentRichTextBox.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
+            }
         }
     }
 }
