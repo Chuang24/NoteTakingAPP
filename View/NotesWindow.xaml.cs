@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Speech.Recognition;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,11 +19,30 @@ namespace NotesAPP.View
     /// <summary>
     /// Interaction logic for NoteWindwo.xaml
     /// </summary>
-    public partial class NoteWindwo : Window
+    public partial class NoteWindow : Window
     {
-        public NoteWindwo()
+        SpeechRecognitionEngine recognizer;
+        public NoteWindow()
         {
             InitializeComponent();
+
+            var currentCulture = (from r in SpeechRecognitionEngine.InstalledRecognizers()
+                                  where r.Culture.Equals(Thread.CurrentThread.CurrentCulture)
+                                  select r).FirstOrDefault();
+            recognizer = new SpeechRecognitionEngine(currentCulture);
+
+            GrammarBuilder builder = new GrammarBuilder();
+            builder.AppendDictation();
+            Grammar grammar = new Grammar(builder);
+            recognizer.LoadGrammar(grammar);
+            recognizer.SetInputToDefaultAudioDevice();
+            recognizer.SpeechRecognized += Recognizer_SpeechRecgonized;
+        }
+
+        private void Recognizer_SpeechRecgonized(object sender, SpeechRecognizedEventArgs e)
+        {
+            string recgonizedText =  e.Result.Text;
+            ContentRichTextBox.Document.Blocks.Add(new Paragraph(new Run(recgonizedText)));
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -29,9 +50,20 @@ namespace NotesAPP.View
             Application.Current.Shutdown();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        bool isRecognizing = false; 
 
+
+        private void SpeechButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isRecognizing)
+            {
+                recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                isRecognizing = true;
+            }else
+            {
+                recognizer.RecognizeAsyncStop();
+                isRecognizing = false; 
+            }
         }
 
         private void ContentRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
