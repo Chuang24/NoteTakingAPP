@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Recognition;
 using System.Threading;
@@ -38,6 +39,19 @@ namespace NotesAPP.View
             List<double> fontSizes = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 28, 48, 72 };
             fontSizeComboBox.ItemsSource = fontSizes;
         }
+
+        //Adding check to UserID from App.xaml.cs to see if any userId exists
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (string.IsNullOrEmpty(App.UserID))
+            {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.ShowDialog();
+            }
+        }
+
 
         private void Recognizer_SpeechRecgonized(object sender, SpeechRecognizedEventArgs e)
         {

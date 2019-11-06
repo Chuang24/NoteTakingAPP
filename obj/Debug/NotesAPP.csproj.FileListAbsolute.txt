@@ -26,7 +26,6 @@ C:\Users\hzh94\source\repos\NotesAPP\obj\Debug\View\LoginWindow.baml
 C:\Users\hzh94\source\repos\NotesAPP\obj\Debug\View\NotesWindow.baml
 C:\Users\hzh94\source\repos\NotesAPP\obj\Debug\NotesAPP.csproj.CopyComplete
 C:\Users\hzh94\source\repos\NotesAPP\obj\Debug\GeneratedInternalTypeHelper.g.cs
-C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csprojAssemblyReference.cache
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\LoginWindow.g.cs
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\NotesWindow.g.cs
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\App.g.cs
@@ -58,3 +57,4 @@ C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\N
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\NoteControl.g.cs
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\Notebook.baml
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\NoteControl.baml
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csprojAssemblyReference.cache

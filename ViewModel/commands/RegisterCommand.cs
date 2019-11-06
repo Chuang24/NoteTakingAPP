@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NotesAPP.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,24 @@ namespace NotesAPP.ViewModel.commands
 
         public bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            var user = parameter as User;
+
+            //if (string.IsNullOrEmpty(user.Username))
+            //    return false;
+            //if (string.IsNullOrEmpty(user.Password))
+            //    return false;
+            //if (string.IsNullOrEmpty(user.Email))
+            //    return false;
+            //if (string.IsNullOrEmpty(user.Lastname))
+            //    return false;
+            //if (string.IsNullOrEmpty(user.Name))
+            //    return false;
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            VM.Register();
         }
     }
 }

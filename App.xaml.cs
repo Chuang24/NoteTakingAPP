@@ -13,5 +13,6 @@ namespace NotesAPP
     /// </summary>
     public partial class App : Application
     {
+        public static string UserID = string.Empty;
     }
 }

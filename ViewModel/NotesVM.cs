@@ -47,7 +47,8 @@ namespace NotesAPP.ViewModel
         public void CreateNoteBook()
         {
             Notebook newNotebook = new Notebook() {
-                Name = "New Notebook"
+                Name = "New Notebook",
+                UserId = int.Parse(App.UserID)
             };
             DatabaseHelper.Insert(newNotebook);
             ReadNotebooks();
