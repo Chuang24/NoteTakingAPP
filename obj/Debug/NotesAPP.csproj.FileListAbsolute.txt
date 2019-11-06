@@ -58,3 +58,7 @@ C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\N
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\Notebook.baml
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\View\UserControls\NoteControl.baml
 C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\obj\Debug\NotesAPP.csprojAssemblyReference.cache
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\bin\Debug\Microsoft.Expression.Interactions.dll
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\bin\Debug\Microsoft.Expression.Interactions.xml
+C:\Users\hzh94\source\repos\NotesAPP\NoteTakingAPP\bin\Debug\System.Windows.Interactivity.xml

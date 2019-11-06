@@ -3,17 +3,33 @@ using NotesAPP.ViewModel.commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NotesAPP.ViewModel
 {
-    public class NotesVM
+    public class NotesVM : INotifyPropertyChanged
     {
+
+        private bool isEditing;
+
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            set
+            {
+                isEditing = value;
+                OnPropertyChanged("IsEditing");
+            }
+        }
+
         public ObservableCollection<Notebook> Notebooks { get; set; }
         private Notebook selectedNotebook
             ;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Notebook SelectedNotebook
         {
@@ -31,12 +47,16 @@ namespace NotesAPP.ViewModel
 
         public NewNotebookCommand NewNotebookCommand { get; set; }
         public NewNoteCommand NewNoteCommand { get; set; }
-
+        public BeginEditeCommand beginEditeCommand { get; set; }
+        public HasEditedCommand HasEditedCommand { get; set; }
         public NotesVM()
         {
+            IsEditing = false;
+
             NewNotebookCommand = new NewNotebookCommand(this);
             NewNoteCommand = new NewNoteCommand(this);
-
+            beginEditeCommand = new BeginEditeCommand(this);
+            HasEditedCommand = new HasEditedCommand(this);
             Notebooks = new ObservableCollection<Notebook>();
             Notes = new ObservableCollection<Note>();
 
@@ -44,6 +64,11 @@ namespace NotesAPP.ViewModel
             ReadNotes();
         }
 
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
         public void CreateNoteBook()
         {
             Notebook newNotebook = new Notebook() {
@@ -100,6 +125,21 @@ namespace NotesAPP.ViewModel
 
         }
 
+
+        public void startEditing()
+        {
+            IsEditing = true;
+        }
+
+        public void HasRenamed(Notebook notebook)
+        {
+            if (notebook != null)
+            {
+                DatabaseHelper.Update(notebook);
+                IsEditing = false;
+                ReadNotebooks();
+            }
+        }
     }
 
     
