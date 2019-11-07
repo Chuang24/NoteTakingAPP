@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NotesAPP.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Speech.Recognition;
 using System.Threading;
@@ -17,9 +19,15 @@ namespace NotesAPP.View
     public partial class NoteWindow : Window
     {
         SpeechRecognitionEngine recognizer;
+        NotesVM viewModel;
+
         public NoteWindow()
         {
             InitializeComponent();
+
+            viewModel = new NotesVM();
+            container.DataContext = viewModel;
+            viewModel.selectedNoteChange += viewmodel_selectedNoteChanged;
 
             var currentCulture = (from r in SpeechRecognitionEngine.InstalledRecognizers()
                                   where r.Culture.Equals(Thread.CurrentThread.CurrentCulture)
@@ -38,6 +46,17 @@ namespace NotesAPP.View
 
             List<double> fontSizes = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 28, 48, 72 };
             fontSizeComboBox.ItemsSource = fontSizes;
+        }
+
+        private void viewmodel_selectedNoteChanged(object sender, EventArgs e)
+        {
+            ContentRichTextBox.Document.Blocks.Clear();
+            if (!string.IsNullOrEmpty(viewModel.SelectedNote.Filelocation))
+            {
+                FileStream filestream = new FileStream(viewModel.SelectedNote.Filelocation, FileMode.Open);
+                TextRange range = new TextRange(ContentRichTextBox.Document.ContentStart, ContentRichTextBox.Document.ContentEnd);
+                range.Load(filestream, DataFormats.Rtf);
+            }
         }
 
         //Adding check to UserID from App.xaml.cs to see if any userId exists
@@ -148,6 +167,16 @@ namespace NotesAPP.View
             ContentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);//text such that user can change it to their own value. 
         }
 
-        
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            string rtfFile = System.IO.Path.Combine(Environment.CurrentDirectory, $"{viewModel.SelectedNote.Id}.rtf");
+            viewModel.SelectedNote.Filelocation = rtfFile;
+
+            FileStream filestream = new FileStream(rtfFile, FileMode.Create);
+            TextRange range = new TextRange(ContentRichTextBox.Document.ContentStart, ContentRichTextBox.Document.ContentEnd);
+            range.Save(filestream, DataFormats.Rtf);
+
+            viewModel.UpdateSelectedNode();
+        }
     }
 }
